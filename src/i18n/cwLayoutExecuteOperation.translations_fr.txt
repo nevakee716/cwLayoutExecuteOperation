@@ -1,0 +1,3 @@
+btn_execute_operation = Exécuter
+execute_config_type_missing = Veuillez vous assurer que la propriété TYPE est sélectionnée
+execute_config_url_missing = Veuillez renseigner l'option URL dans Evolve Designer
