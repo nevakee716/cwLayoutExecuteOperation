@@ -25,7 +25,7 @@
     }
     $('.execute-operation-button').removeClass('cw-hidden');
     $('.execute-operation-button').click(function(){
-      that.execute($(this).attr('data-object-id'), cwConfigurationExecuteMapping[that.mainObject.properties.type]);
+      that.execute($(this).attr('data-object-id'), $(this).attr('data-object-type'));
     });
   };
 
@@ -53,9 +53,14 @@
   };
 
   cwLayoutExecuteOperation.prototype.drawOne = function (output, item, callback, nameOnly) {
-    var itemDisplayName, cleanItemName, uid, canDelete, newObject;
+    var itemDisplayName, cleanItemName, uid, canDelete, newObject, type;
     this.mainObject = item;
-
+    try {
+      type = cwConfigurationExecuteMapping[item.properties.type];
+    } catch (error) {
+      
+    }
+    
     if (!cwApi.isUndefined(item.is_new) && item.is_new === true) {
       itemDisplayName = item.name;
       newObject = true;
@@ -84,7 +89,7 @@
     output.push("<li ", cwApi.cwLayouts.cwLayoutList.addHtmlDataItems(uid, cleanItemName, item.object_id, canDelete, newObject, item.objectTypeScriptName), "class='cw-item ", this.nodeID, " ", this.nodeID, "-", item.object_id, " ", this.options.NodeCSSClass, "'>", "<div class='", this.nodeID, " ", this.options.NodeCSSClass, "'>");
     cwApi.cwEditProperties.outputAssociationDeleteItem(output, item.nodeID);
     output.push(itemDisplayName, '<div class="execute-operation-container bootstrap-iso">');
-    output.push('<button data-object-id="', item.object_id, '" class="execute-operation-button cw-hidden">', $.i18n.prop('btn_execute_operation'), '</button>');
+    output.push('<button data-object-type="', type, '" data-object-id="', item.object_id, '" class="execute-operation-button cw-hidden">', $.i18n.prop('btn_execute_operation'), '</button>');
     output.push('<div class="execute-operation-result" id="execute-operation-result-', item.object_id, '">');
     output.push('<i class="execute-result-', item.object_id, ' icon-execute-result-ok-', item.object_id, ' fa fa-check cw-hidden result-ok"></i>');
     output.push('<i class="execute-result-', item.object_id, ' icon-execute-result-ko-', item.object_id, ' fa fa-times cw-hidden result-ko"></i>');
